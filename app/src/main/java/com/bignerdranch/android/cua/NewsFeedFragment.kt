@@ -10,12 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bignerdranch.android.cua.api.SteamApi
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
+import com.bignerdranch.android.cua.api.NewsItem
 
 
 private const val TAG = "NewsFeedFragment"
@@ -26,12 +21,11 @@ class NewsFeedFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val steamLiveData: LiveData<String> =
-            SteamQuery().fetchContents()
+        val steamLiveData: LiveData<List<NewsItem>> =  SteamQuery().fetchContents()
         steamLiveData.observe(
             this,
-            Observer { responseString ->
-                Log.d(TAG, "Response received: $responseString")
+            Observer { newsItems ->
+                Log.d(TAG, "Response received: $newsItems")
             })
 
     }

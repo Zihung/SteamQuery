@@ -8,5 +8,5 @@ interface SteamApi {
         "?appid=457140"
     + "&maxlength=300&format=json"
     )
-    fun fetchNews(): Call<String>
+    fun fetchNews(): Call<SteamResponse>
 }
