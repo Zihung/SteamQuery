@@ -4,6 +4,9 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface SteamApi {
-    @GET("/")
-    fun fetchContents(): Call<String>
+    @GET(
+        "?appid=457140"
+    + "&maxlength=300&format=json"
+    )
+    fun fetchNews(): Call<String>
 }

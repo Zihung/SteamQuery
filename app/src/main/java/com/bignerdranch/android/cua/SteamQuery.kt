@@ -17,7 +17,7 @@ class SteamQuery {
 
     init {
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://store.steampowered.com/")
+            .baseUrl("https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .build()
         steamApi = retrofit.create(SteamApi::class.java)
@@ -26,7 +26,7 @@ class SteamQuery {
     fun fetchContents(): LiveData<String> {
         val responseLiveData: MutableLiveData<String> =
             MutableLiveData()
-        val flickrRequest: Call<String> = steamApi.fetchContents()
+        val flickrRequest: Call<String> = steamApi.fetchNews()
         flickrRequest.enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.e(TAG, "Failed to fetch photos", t)
