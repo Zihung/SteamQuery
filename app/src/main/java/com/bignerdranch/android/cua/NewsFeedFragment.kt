@@ -2,10 +2,9 @@ package com.bignerdranch.android.cua
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -21,8 +20,12 @@ class NewsFeedFragment : Fragment() {
     private lateinit var newsFeedViewModel: NewsFeedViewModel
     private lateinit var newsFeedView: RecyclerView
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        retainInstance = true
+        setHasOptionsMenu(true)
 
         newsFeedViewModel = ViewModelProviders.of(this).get(NewsFeedViewModel::class.java)
 
@@ -51,6 +54,31 @@ class NewsFeedFragment : Fragment() {
             Observer { galleryItems ->
                 newsFeedView.adapter = PhotoAdapter(galleryItems)
             })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_news_feed, menu)
+
+        val searchItem: MenuItem = menu.findItem(R.id.menu_item_search)
+        val searchView = searchItem.actionView as SearchView
+        searchView.apply {
+            setOnQueryTextListener(object :
+                SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(queryText: String):
+                        Boolean {
+                    Log.d(TAG, "QueryTextSubmit: $queryText")
+                    newsFeedViewModel.fetchGames(queryText)
+                    return true
+                }
+                override fun onQueryTextChange(queryText: String):
+                        Boolean {
+                    Log.d(TAG, "QueryTextChange: $queryText")
+                    return false
+                }
+            })
+        }
     }
 
     private class NewsHolder(itemTextView: TextView)

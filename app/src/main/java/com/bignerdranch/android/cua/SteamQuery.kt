@@ -3,10 +3,8 @@ package com.bignerdranch.android.cua
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.bignerdranch.android.cua.api.NewsItem
-import com.bignerdranch.android.cua.api.NewsResponse
-import com.bignerdranch.android.cua.api.SteamApi
-import com.bignerdranch.android.cua.api.SteamResponse
+import com.bignerdranch.android.cua.api.*
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,17 +17,28 @@ class SteamQuery {
     private val steamApi: SteamApi
 
     init {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(SteamInterceptor())
+            .build()
+
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/")
+            .baseUrl("https://api.steampowered.com/")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
             .build()
         steamApi = retrofit.create(SteamApi::class.java)
     }
 
-    fun fetchContents(): LiveData<List<NewsItem>> {
+    fun searchGames(query: String): LiveData<List<NewsItem>> {
+        return fetchGameMetadata(steamApi.searchGames(query))
+    }
+
+
+
+    private fun fetchGameMetadata(steamRequest: Call<SteamResponse>) : LiveData<List<NewsItem>> {
         val responseLiveData: MutableLiveData<List<NewsItem>> = MutableLiveData()
 
-        val steamRequest: Call<SteamResponse> = steamApi.fetchNews()
+//        val steamRequest: Call<SteamResponse> = steamApi.fetchNews()
         steamRequest.enqueue(object : Callback<SteamResponse> {
             override fun onFailure(call: Call<SteamResponse>, t: Throwable) {
                 Log.e(TAG, "Failed to fetch photos", t)
