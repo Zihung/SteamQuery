@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.cua.api.NewsItem
@@ -16,17 +18,13 @@ import com.bignerdranch.android.cua.api.NewsItem
 private const val TAG = "NewsFeedFragment"
 
 class NewsFeedFragment : Fragment() {
+    private lateinit var newsFeedViewModel: NewsFeedViewModel
     private lateinit var newsFeedView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val steamLiveData: LiveData<List<NewsItem>> =  SteamQuery().fetchContents()
-        steamLiveData.observe(
-            this,
-            Observer { newsItems ->
-                Log.d(TAG, "Response received: $newsItems")
-            })
+        newsFeedViewModel = ViewModelProviders.of(this).get(NewsFeedViewModel::class.java)
 
     }
 
@@ -43,5 +41,37 @@ class NewsFeedFragment : Fragment() {
     }
     companion object {
         fun newInstance() = NewsFeedFragment()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        super.onViewCreated(view, savedInstanceState)
+        newsFeedViewModel.galleryItemLiveData.observe(
+            viewLifecycleOwner,
+            Observer { galleryItems ->
+                newsFeedView.adapter = PhotoAdapter(galleryItems)
+            })
+    }
+
+    private class NewsHolder(itemTextView: TextView)
+        : RecyclerView.ViewHolder(itemTextView) {
+        val bindTitle: (CharSequence) -> Unit = itemTextView::setText
+    }
+
+    private class PhotoAdapter(private val galleryItems:  List<NewsItem>)
+        : RecyclerView.Adapter<NewsHolder>() {
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ): NewsHolder {
+            val textView = TextView(parent.context)
+            return NewsHolder(textView)
+        }
+        override fun getItemCount(): Int = galleryItems.size
+        override fun onBindViewHolder(holder: NewsHolder, position:
+        Int) {
+            val galleryItem = galleryItems[position]
+            holder.bindTitle(galleryItem.title)
+        }
     }
 }
