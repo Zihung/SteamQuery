@@ -43,7 +43,7 @@ class NewsFeedFragment : Fragment() {
             container, false
         )
         newsFeedView = view.findViewById(R.id.fragment_news_feed)
-        newsFeedView.layoutManager = GridLayoutManager(context, 3)
+        newsFeedView.layoutManager = GridLayoutManager(context, 1)
         return view
     }
     companion object {
@@ -56,7 +56,7 @@ class NewsFeedFragment : Fragment() {
         newsFeedViewModel.galleryItemLiveData.observe(
             viewLifecycleOwner,
             Observer { galleryItems ->
-                newsFeedView.adapter = PhotoAdapter(galleryItems)
+                newsFeedView.adapter = NewsAdapter(galleryItems)
             })
     }
 
@@ -86,27 +86,58 @@ class NewsFeedFragment : Fragment() {
         }
     }
 
-    private class NewsHolder(itemTextView: TextView)
-        : RecyclerView.ViewHolder(itemTextView) {
-        val bindTitle: (CharSequence) -> Unit = itemTextView::setText
+    private class NewsHolder(view: View)
+        : RecyclerView.ViewHolder(view) {
+//        val bindTitle: (CharSequence) -> Unit = itemTextView::setText
+//        val bindDate: (CharSequence) -> Unit = itemTextView::setText
+
+        val titleTextView: TextView =
+            itemView.findViewById(R.id.news_title)
+        val dateTextView: TextView = itemView.findViewById(R.id.news_date)
     }
 
-    private class PhotoAdapter(private val galleryItems: List<NewsItem>)
+
+    private inner class NewsAdapter(var crimes: List<NewsItem>)
         : RecyclerView.Adapter<NewsHolder>() {
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-        ): NewsHolder {
-            val textView = TextView(parent.context)
-            return NewsHolder(textView)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType:
+        Int)
+                : NewsHolder {
+            val view = layoutInflater.inflate(R.layout.list_item_news,
+                parent, false)
+            return NewsHolder(view)
         }
-        override fun getItemCount(): Int = galleryItems.size
-        override fun onBindViewHolder(
-            holder: NewsHolder, position:
-            Int
-        ) {
-            val galleryItem = galleryItems[position]
-            holder.bindTitle(galleryItem.title)
+        override fun getItemCount() = crimes.size
+        override fun onBindViewHolder(holder: NewsHolder, position:
+        Int) {
+            val crime = crimes[position]
+            holder.apply {
+                titleTextView.text = crime.title
+                dateTextView.text = crime.date.toString()
+            }
         }
     }
+
+//    private class PhotoAdapter(private val galleryItems: List<NewsItem>)
+//        : RecyclerView.Adapter<NewsHolder>() {
+//        override fun onCreateViewHolder(
+//            parent: ViewGroup,
+//            viewType: Int
+//        ): NewsHolder {
+//            val textView = TextView(parent.context)
+//            return NewsHolder(textView)
+//        }
+//        override fun getItemCount(): Int = galleryItems.size
+//        override fun onBindViewHolder(
+//            holder: NewsHolder, position:
+//            Int
+//        ) {
+//            val galleryItem = galleryItems[position]
+//            holder.apply{
+//                titleTextView.text = galleryItem.title
+//                dateTextView.text = galleryItem.date
+//            }
+////            holder.bindTitle(galleryItem.title)
+////            holder.bindDate(galleryItem.date)
+//        }
+//    }
 }
