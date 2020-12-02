@@ -36,5 +36,15 @@ class NewsFeedActivity : AppCompatActivity() {
 
         val games: MyPojo = gson.fromJson(jsonFileString, MyPojo::class.java)
         println("> From JSON File:\n" + games)
+
+
+//        val mapType = object : TypeToken<Map<String, Any>>() {}.type
+//
+//        var gamesMap: Map<String, Any> = gson.fromJson(jsonFileString, object : TypeToken<Map<String, Any>>() {}.type)
+//        gamesMap.forEach { println(it) }
+
+
+
+
     }
 }
