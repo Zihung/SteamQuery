@@ -31,6 +31,8 @@ class NewsFeedFragment : Fragment() {
 
         newsFeedViewModel = ViewModelProviders.of(this).get(NewsFeedViewModel::class.java)
 
+
+
     }
 
     override fun onCreateView(
