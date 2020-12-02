@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:text="Crime Title"/>
     <TextView
-        android:id="@+id/news_date"
+        android:id="@+id/news_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Crime Date"/>

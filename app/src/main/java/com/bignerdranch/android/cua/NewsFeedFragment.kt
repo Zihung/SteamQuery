@@ -93,7 +93,7 @@ class NewsFeedFragment : Fragment() {
 
         val titleTextView: TextView =
             itemView.findViewById(R.id.news_title)
-        val dateTextView: TextView = itemView.findViewById(R.id.news_date)
+        val previewTextView: TextView = itemView.findViewById(R.id.news_preview)
     }
 
 
@@ -111,8 +111,9 @@ class NewsFeedFragment : Fragment() {
         Int) {
             val crime = crimes[position]
             holder.apply {
+                previewTextView.text = crime.appid
                 titleTextView.text = crime.title
-                dateTextView.text = crime.date.toString()
+
             }
         }
     }
