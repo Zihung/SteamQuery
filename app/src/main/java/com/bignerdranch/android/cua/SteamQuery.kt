@@ -41,7 +41,7 @@ class SteamQuery {
 //        val steamRequest: Call<SteamResponse> = steamApi.fetchNews()
         steamRequest.enqueue(object : Callback<SteamResponse> {
             override fun onFailure(call: Call<SteamResponse>, t: Throwable) {
-                Log.e(TAG, "Failed to fetch photos", t)
+                Log.e(TAG, "Failed to fetch news", t)
             }
             override fun onResponse(
                 call: Call<SteamResponse>,
