@@ -30,12 +30,12 @@ class SteamQuery {
     }
 
     fun searchGames(query: String): LiveData<List<NewsItem>> {
-        return fetchGameMetadata(steamApi.searchGames(query))
+        return fetchGameMetadata(steamApi.searchGames(query), query)
     }
 
 
 
-    private fun fetchGameMetadata(steamRequest: Call<SteamResponse>) : LiveData<List<NewsItem>> {
+    private fun fetchGameMetadata(steamRequest: Call<SteamResponse>, query : String) : LiveData<List<NewsItem>> {
         val responseLiveData: MutableLiveData<List<NewsItem>> = MutableLiveData()
 
 //        val steamRequest: Call<SteamResponse> = steamApi.fetchNews()
@@ -53,8 +53,8 @@ class SteamQuery {
                 val newsResponse: NewsResponse? = steamResponse?.appnews
                 var galleryItems: List<NewsItem> = newsResponse?.newsItems
                         ?: mutableListOf()
-                galleryItems = galleryItems.filterNot {
-                    it.title.isBlank()
+                galleryItems = galleryItems.filter {
+                    it.appid == query
                 }
                 responseLiveData.value = galleryItems
             }
