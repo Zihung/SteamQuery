@@ -32,7 +32,7 @@ class NewsItemPageFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_news_item_page, container, false)
-
+        Log.d(TAG, "URI:  $uri")
         progressBar = view.findViewById(R.id.progress_bar)
         progressBar.max = 100
 
@@ -56,6 +56,8 @@ class NewsItemPageFragment : Fragment() {
 
         var url = uri.toString()
         Log.d(TAG, "News Item URL: $url")
+        webView.getSettings().javaScriptEnabled = true;
+        webView.getSettings().domStorageEnabled = true;
         webView.loadUrl(uri.toString())
 
         return view
