@@ -1,6 +1,5 @@
 package com.bignerdranch.android.cua
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -12,8 +11,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.cua.api.NewsItem
-import java.io.IOException
-import java.io.InputStream
 
 
 private const val TAG = "NewsFeedFragment"
@@ -88,14 +85,28 @@ class NewsFeedFragment : Fragment() {
         }
     }
 
-    private class NewsHolder(view: View)
-        : RecyclerView.ViewHolder(view) {
+    private inner class NewsHolder(view: View)
+        : RecyclerView.ViewHolder(view), View.OnClickListener {
 //        val bindTitle: (CharSequence) -> Unit = itemTextView::setText
 //        val bindDate: (CharSequence) -> Unit = itemTextView::setText
 
         val titleTextView: TextView =
             itemView.findViewById(R.id.news_title)
         val previewTextView: TextView = itemView.findViewById(R.id.news_preview)
+
+        private lateinit var newsItem: NewsItem
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        fun bindNewsItem(item: NewsItem) {
+            newsItem = item
+        }
+
+        override fun onClick(view: View) {
+            val intent = NewsItemPageActivity.newIntent(requireContext(), newsItem.newsPageUri)
+            startActivity(intent)
+        }
     }
 
 
@@ -112,6 +123,7 @@ class NewsFeedFragment : Fragment() {
         override fun onBindViewHolder(holder: NewsHolder, position:
         Int) {
             val crime = crimes[position]
+            holder.bindNewsItem(crime)
             holder.apply {
                 previewTextView.text = crime.appid
                 titleTextView.text = crime.title
