@@ -8,6 +8,7 @@ import com.bignerdranch.android.cua.api.MyPojo
 import com.bignerdranch.android.cua.api.getJsonDataFromAsset
 
 import com.google.gson.Gson
+import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import java.io.FileReader
 
@@ -35,13 +36,8 @@ class NewsFeedActivity : AppCompatActivity() {
         val gson = Gson()
 
         val games: MyPojo = gson.fromJson(jsonFileString, MyPojo::class.java)
+        games.applist?.setAppsMap()
         println("> From JSON File:\n" + games)
-
-
-//        val mapType = object : TypeToken<Map<String, Any>>() {}.type
-//
-//        var gamesMap: Map<String, Any> = gson.fromJson(jsonFileString, object : TypeToken<Map<String, Any>>() {}.type)
-//        gamesMap.forEach { println(it) }
 
 
 
