@@ -7,7 +7,7 @@ class Applist {
     fun setAppsMap(){
         for(each in this.apps){
 //            appsMap[each.appid] = each.name
-            appsMap.put(each.appid, each.name)
+            appsMap.put(each.name.toLowerCase(), each.appid)
         }
     }
 

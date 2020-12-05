@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,10 +15,12 @@ import com.bignerdranch.android.cua.api.NewsItem
 
 
 private const val TAG = "NewsFeedFragment"
+private const val ARG_APPS = "apps_map"
 
 class NewsFeedFragment : Fragment() {
     private lateinit var newsFeedViewModel: NewsFeedViewModel
     private lateinit var newsFeedView: RecyclerView
+    private lateinit var appsMap : HashMap<String, String>
 
 
 
@@ -27,6 +30,8 @@ class NewsFeedFragment : Fragment() {
         setHasOptionsMenu(true)
 
         newsFeedViewModel = ViewModelProviders.of(this).get(NewsFeedViewModel::class.java)
+        appsMap = arguments?.getSerializable(ARG_APPS) as HashMap<String, String>
+        Log.d(TAG, "args bundle app map: $appsMap")
 
 
 
@@ -46,7 +51,18 @@ class NewsFeedFragment : Fragment() {
         return view
     }
     companion object {
-        fun newInstance() = NewsFeedFragment()
+        fun newInstance(appsMap: HashMap<String, String>): NewsFeedFragment {
+
+            val args = Bundle().apply{
+//                putAll(ARG_APPS, appsMap)
+                putSerializable(ARG_APPS, appsMap)
+            }
+            return NewsFeedFragment().apply{
+                arguments = args
+            }
+        }
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
@@ -71,8 +87,28 @@ class NewsFeedFragment : Fragment() {
                 SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(queryText: String):
                         Boolean {
-                    Log.d(TAG, "QueryTextSubmit: $queryText")
-                    newsFeedViewModel.fetchGames(queryText)
+
+                    // convert name into app id
+                    val appid : String? = appsMap[queryText.toLowerCase()]
+                    Log.d(TAG, "Name: $queryText, Appid: $appid")
+
+
+                    if (appid != null) {
+                        newsFeedViewModel.fetchGames(appid)
+                    }
+                    else{
+                        val text = "Game not found. Please enter full name of game including spaces and special characters."
+                        val duration = Toast.LENGTH_SHORT
+
+                        val toast = Toast.makeText(context, text, duration)
+                        toast.setGravity(Gravity.TOP, 0, 0)
+
+                        toast.show()
+
+
+                    }
+
+
                     return true
                 }
 
@@ -87,8 +123,7 @@ class NewsFeedFragment : Fragment() {
 
     private inner class NewsHolder(view: View)
         : RecyclerView.ViewHolder(view), View.OnClickListener {
-//        val bindTitle: (CharSequence) -> Unit = itemTextView::setText
-//        val bindDate: (CharSequence) -> Unit = itemTextView::setText
+
 
         val titleTextView: TextView =
             itemView.findViewById(R.id.news_title)

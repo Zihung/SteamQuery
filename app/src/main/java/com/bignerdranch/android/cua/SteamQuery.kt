@@ -49,7 +49,7 @@ class SteamQuery {
             ) {
                 Log.d(TAG, "Response received")
                 val steamResponse: SteamResponse? = response.body()
-                Log.d(TAG, steamResponse.toString())
+//                Log.d(TAG, steamResponse.toString())
                 val newsResponse: NewsResponse? = steamResponse?.appnews
                 var galleryItems: List<NewsItem> = newsResponse?.newsItems
                         ?: mutableListOf()
