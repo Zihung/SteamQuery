@@ -92,7 +92,6 @@ class NewsFeedFragment : Fragment() {
                     val appid : String? = appsMap[queryText.toLowerCase()]
                     Log.d(TAG, "Name: $queryText, Appid: $appid")
 
-
                     if (appid != null) {
                         newsFeedViewModel.fetchGames(appid)
                     }
@@ -102,13 +101,8 @@ class NewsFeedFragment : Fragment() {
 
                         val toast = Toast.makeText(context, text, duration)
                         toast.setGravity(Gravity.TOP, 0, 0)
-
                         toast.show()
-
-
                     }
-
-
                     return true
                 }
 
@@ -145,7 +139,7 @@ class NewsFeedFragment : Fragment() {
     }
 
 
-    private inner class NewsAdapter(var crimes: List<NewsItem>)
+    private inner class NewsAdapter(var news: List<NewsItem>)
         : RecyclerView.Adapter<NewsHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType:
         Int)
@@ -154,40 +148,16 @@ class NewsFeedFragment : Fragment() {
                 parent, false)
             return NewsHolder(view)
         }
-        override fun getItemCount() = crimes.size
+        override fun getItemCount() = news.size
         override fun onBindViewHolder(holder: NewsHolder, position:
         Int) {
-            val crime = crimes[position]
-            holder.bindNewsItem(crime)
+            val art = news[position]
+            holder.bindNewsItem(art)
             holder.apply {
-                previewTextView.text = crime.appid
-                titleTextView.text = crime.title
+                previewTextView.text = art.appid
+                titleTextView.text = art.title
 
             }
         }
     }
-
-//    private class PhotoAdapter(private val galleryItems: List<NewsItem>)
-//        : RecyclerView.Adapter<NewsHolder>() {
-//        override fun onCreateViewHolder(
-//            parent: ViewGroup,
-//            viewType: Int
-//        ): NewsHolder {
-//            val textView = TextView(parent.context)
-//            return NewsHolder(textView)
-//        }
-//        override fun getItemCount(): Int = galleryItems.size
-//        override fun onBindViewHolder(
-//            holder: NewsHolder, position:
-//            Int
-//        ) {
-//            val galleryItem = galleryItems[position]
-//            holder.apply{
-//                titleTextView.text = galleryItem.title
-//                dateTextView.text = galleryItem.date
-//            }
-////            holder.bindTitle(galleryItem.title)
-////            holder.bindDate(galleryItem.date)
-//        }
-//    }
 }
