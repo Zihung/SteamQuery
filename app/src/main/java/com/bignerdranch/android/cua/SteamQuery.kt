@@ -33,6 +33,9 @@ class SteamQuery {
         return fetchGameMetadata(steamApi.searchGames(query), query)
     }
 
+    fun findGame(query: String): LiveData<List<Game>>? {
+        return findGameMetadata(steamApi.findGame(query), query)
+    }
 
 
     private fun fetchGameMetadata(steamRequest: Call<SteamResponse>, query : String) : LiveData<List<NewsItem>> {
@@ -61,4 +64,34 @@ class SteamQuery {
         })
         return responseLiveData
     }
+
+    //find game by appid/name, still using code for mabove, need to retrieve name only
+    private fun findGameMetadata(steamRequest: Call<SteamResponse>, query : String) : LiveData<List<Game>> {
+        val responseLiveData: MutableLiveData<List<Game>> = MutableLiveData()
+
+//        val steamRequest: Call<SteamResponse> = steamApi.fetchNews()
+        steamRequest.enqueue(object : Callback<SteamResponse> {
+            override fun onFailure(call: Call<SteamResponse>, t: Throwable) {
+                Log.e(TAG, "Failed to fetch photos", t)
+            }
+            override fun onResponse(
+                call: Call<SteamResponse>,
+                response: Response<SteamResponse>
+            ) {
+                Log.d(TAG, "Response received")
+                val steamResponse: SteamResponse? = response.body()
+//                Log.d(TAG, steamResponse.toString())
+                val newsResponse: NewsResponse? = steamResponse?.appnews
+                var galleryItems: List<Game> = (newsResponse?.newsItems
+                    ?: mutableListOf()) as List<Game>
+                galleryItems = galleryItems.filter {
+                    it.appid == query
+                }
+                responseLiveData.value = galleryItems
+            }
+        })
+        return responseLiveData
+    }
+
+
 }

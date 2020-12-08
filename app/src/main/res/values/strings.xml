@@ -3,4 +3,8 @@
     <string name="search">Search</string>
     <string name="clear_search">Clear Search</string>
     <string name="title">Title</string>
+    <string name="game_title_label">Game</string>
+    <string name="game_news_title_label">News</string>
+    <string name="games_followed">Games Followed</string>
+    <string name="add_game">Add Game</string>
 </resources>
