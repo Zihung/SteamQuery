@@ -31,11 +31,9 @@ class GamesFollowedListFragment : Fragment() {
         retainInstance = true
         setHasOptionsMenu(true)
 
-        //gamesFollowedListViewModel = ViewModelProviders.of(this).get(GamesFollowedListViewModel::class.java)
+//        gamesFollowedListViewModel = ViewModelProviders.of(this).get(GamesFollowedListViewModel::class.java)
+
         appsMap = arguments?.getSerializable(ARG_APPS) as HashMap<String, String>
-
-
-
     }
 
     companion object {
