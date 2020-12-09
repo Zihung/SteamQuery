@@ -33,15 +33,24 @@ class GamesFollowedListFragment : Fragment() {
 
         //gamesFollowedListViewModel = ViewModelProviders.of(this).get(GamesFollowedListViewModel::class.java)
         appsMap = arguments?.getSerializable(ARG_APPS) as HashMap<String, String>
-        Log.d(TAG, "args bundle app map: $appsMap")
+
 
 
     }
 
     companion object {
-        fun newInstance(): GamesFollowedListFragment{
-            return GamesFollowedListFragment()
+        fun newInstance(appsMap: HashMap<String, String>): NewsFeedFragment {
+
+            val args = Bundle().apply{
+//                putAll(ARG_APPS, appsMap)
+                putSerializable(ARG_APPS, appsMap)
+            }
+            return NewsFeedFragment().apply{
+                arguments = args
+            }
         }
+
+
     }
 
     override fun onCreateView(
