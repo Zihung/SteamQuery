@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                         supportFragmentManager
                             .beginTransaction()
                             .replace(R.id.fragmentContainer,
-                                GamesListFragment.newInstance())
+                                GamesListFragment.newInstance(appsMap))
                             .commit()
                     }
                 }
