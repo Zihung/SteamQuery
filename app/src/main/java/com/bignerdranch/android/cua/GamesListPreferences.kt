@@ -19,4 +19,13 @@ object GamesListPreferences {
             .putString(name, appid)
             .apply()
     }
+
+    fun removeStoredQuery(context: Context, name: String) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+            .edit()
+            .remove(name)
+            .apply()
+    }
+
+
 }

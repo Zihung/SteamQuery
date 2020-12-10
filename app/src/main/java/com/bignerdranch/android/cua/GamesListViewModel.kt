@@ -25,4 +25,8 @@ class GamesListViewModel(private val app: Application) :
     fun followGame(name: String= "", appid: String= ""){
         GamesListPreferences.setStoredQuery(app, name, appid)
     }
+
+    fun removeGame(name: String=""){
+        GamesListPreferences.removeStoredQuery(app, name)
+    }
 }
