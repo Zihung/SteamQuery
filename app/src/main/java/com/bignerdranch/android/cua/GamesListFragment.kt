@@ -117,7 +117,7 @@ class GamesListFragment : Fragment() {
 
 
     private inner class GameHolder(view: View)
-        : RecyclerView.ViewHolder(view), View.OnClickListener {
+        : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
 
         private lateinit var game: Game
 
@@ -127,6 +127,7 @@ class GamesListFragment : Fragment() {
 
         init {
             itemView.setOnClickListener(this)
+            itemView.setOnLongClickListener(this)
         }
 
         fun bind(game: Game) {
@@ -139,8 +140,17 @@ class GamesListFragment : Fragment() {
         // CODE ADD/REMOVE LOGIC HERE PROBABLY
         override fun onClick(v: View) {
             val ft: FragmentTransaction = fragmentManager!!.beginTransaction()
-            ft.replace(R.id.fragmentContainer, NewsFeedFragment.searchInstance(this.game.appid), "NewFragmentTag")
+            ft.replace(
+                R.id.fragmentContainer,
+                NewsFeedFragment.searchInstance(this.game.appid),
+                "NewFragmentTag"
+            )
             ft.commit()
+        }
+
+        override fun onLongClick(v: View?): Boolean {
+            gamesListViewModel.followGame(this.game.name)
+            return true
         }
     }
 
