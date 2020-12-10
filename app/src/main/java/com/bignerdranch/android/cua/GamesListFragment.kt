@@ -7,7 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -60,15 +60,15 @@ class GamesListFragment : Fragment() {
                         Boolean {
 
                     // convert name into app id
-                    val appid : String? = appsMap[queryText.toLowerCase()]
+                    val appid: String? = appsMap[queryText.toLowerCase()]
                     Log.d(TAG, "Name: $queryText, Appid: $appid")
 
                     if (appid != null) {
                         gamesListViewModel.followGame(queryText, appid)
                         updateUI()
-                    }
-                    else{
-                        val text = "Game not found. Please enter full name of game including spaces and special characters."
+                    } else {
+                        val text =
+                            "Game not found. Please enter full name of game including spaces and special characters."
                         val duration = Toast.LENGTH_SHORT
 
                         val toast = Toast.makeText(context, text, duration)
@@ -95,8 +95,10 @@ class GamesListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_games_followed_list,
-            container, false)
+        val view = inflater.inflate(
+            R.layout.fragment_games_followed_list,
+            container, false
+        )
         gameRecyclerView =
             view.findViewById(R.id.games_followed_recycler_view) as RecyclerView
         gameRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -136,9 +138,9 @@ class GamesListFragment : Fragment() {
 
         // CODE ADD/REMOVE LOGIC HERE PROBABLY
         override fun onClick(v: View) {
-            Toast.makeText(context, "${game.name} pressed!",
-                Toast.LENGTH_SHORT)
-                .show()
+            val ft: FragmentTransaction = fragmentManager!!.beginTransaction()
+            ft.replace(R.id.fragmentContainer, NewsFeedFragment.searchInstance(appsMap, this.game.name), "NewFragmentTag")
+            ft.commit()
         }
     }
 
@@ -146,16 +148,22 @@ class GamesListFragment : Fragment() {
 
     private inner class GameAdapter(var games: List<Game>)
         : RecyclerView.Adapter<GameHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType:
-        Int)
+        override fun onCreateViewHolder(
+            parent: ViewGroup, viewType:
+            Int
+        )
                 : GameHolder {
-            val view = layoutInflater.inflate(R.layout.list_item_game,
-                parent, false)
+            val view = layoutInflater.inflate(
+                R.layout.list_item_game,
+                parent, false
+            )
             return GameHolder(view)
         }
         override fun getItemCount() = games.size
-        override fun onBindViewHolder(holder: GameHolder, position:
-        Int) {
+        override fun onBindViewHolder(
+            holder: GameHolder, position:
+            Int
+        ) {
             val game = games[position]
             holder.bind(game)
         }
