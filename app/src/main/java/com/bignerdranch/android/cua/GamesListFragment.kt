@@ -139,7 +139,7 @@ class GamesListFragment : Fragment() {
         // CODE ADD/REMOVE LOGIC HERE PROBABLY
         override fun onClick(v: View) {
             val ft: FragmentTransaction = fragmentManager!!.beginTransaction()
-            ft.replace(R.id.fragmentContainer, NewsFeedFragment.searchInstance(appsMap, this.game.name), "NewFragmentTag")
+            ft.replace(R.id.fragmentContainer, NewsFeedFragment.searchInstance(this.game.appid), "NewFragmentTag")
             ft.commit()
         }
     }

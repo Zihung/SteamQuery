@@ -29,31 +29,15 @@ class NewsFeedFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        setHasOptionsMenu(true)
+//        setHasOptionsMenu(true)
 
         newsFeedViewModel = ViewModelProviders.of(this).get(NewsFeedViewModel::class.java)
-        appsMap = arguments?.getSerializable(ARG_APPS) as HashMap<String, String>
+//        appsMap = arguments?.getSerializable(ARG_APPS) as HashMap<String, String>
         presearch = arguments!!.getString(PRE_SEARCH).toString()
 
-
-        val appid : String? = appsMap[presearch.toLowerCase()]
-        Log.d(TAG, "Name: $presearch, Appid: $appid")
-
-        if (appid != null) {
-            newsFeedViewModel.fetchGames(appid)
+        if(presearch != null){
+            newsFeedViewModel.fetchGames(presearch)
         }
-        else{
-            val text = "Game not found. Please enter full name of game including spaces and special characters."
-            val duration = Toast.LENGTH_SHORT
-
-            val toast = Toast.makeText(context, text, duration)
-            toast.setGravity(Gravity.TOP, 0, 0)
-            toast.show()
-        }
-
-
-        Log.d(TAG, "args bundle app map: $appsMap")
-
 
 
     }
@@ -83,11 +67,10 @@ class NewsFeedFragment : Fragment() {
             }
         }
 
-        fun searchInstance(appsMap: HashMap<String, String>, query: String): NewsFeedFragment {
+        fun searchInstance(query: String): NewsFeedFragment {
 
             val args = Bundle().apply{
 //                putAll(ARG_APPS, appsMap)
-                putSerializable(ARG_APPS, appsMap)
                 putString(PRE_SEARCH, query)
             }
 
@@ -111,45 +94,45 @@ class NewsFeedFragment : Fragment() {
             })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
-    {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.fragment_news_feed, menu)
-
-        val searchItem: MenuItem = menu.findItem(R.id.menu_item_search)
-        val searchView = searchItem.actionView as SearchView
-        searchView.apply {
-            setOnQueryTextListener(object :
-                SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(queryText: String):
-                        Boolean {
-
-                    // convert name into app id
-                    val appid : String? = appsMap[queryText.toLowerCase()]
-                    Log.d(TAG, "Name: $queryText, Appid: $appid")
-
-                    if (appid != null) {
-                        newsFeedViewModel.fetchGames(appid)
-                    }
-                    else{
-                        val text = "Game not found. Please enter full name of game including spaces and special characters."
-                        val duration = Toast.LENGTH_SHORT
-
-                        val toast = Toast.makeText(context, text, duration)
-                        toast.setGravity(Gravity.TOP, 0, 0)
-                        toast.show()
-                    }
-                    return true
-                }
-
-                override fun onQueryTextChange(queryText: String):
-                        Boolean {
-                    Log.d(TAG, "QueryTextChange: $queryText")
-                    return false
-                }
-            })
-        }
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
+//    {
+//        super.onCreateOptionsMenu(menu, inflater)
+//        inflater.inflate(R.menu.fragment_news_feed, menu)
+//
+//        val searchItem: MenuItem = menu.findItem(R.id.menu_item_search)
+//        val searchView = searchItem.actionView as SearchView
+//        searchView.apply {
+//            setOnQueryTextListener(object :
+//                SearchView.OnQueryTextListener {
+//                override fun onQueryTextSubmit(queryText: String):
+//                        Boolean {
+//
+//                    // convert name into app id
+//                    val appid : String? = appsMap[queryText.toLowerCase()]
+//                    Log.d(TAG, "Name: $queryText, Appid: $appid")
+//
+//                    if (appid != null) {
+//                        newsFeedViewModel.fetchGames(appid)
+//                    }
+//                    else{
+//                        val text = "Game not found. Please enter full name of game including spaces and special characters."
+//                        val duration = Toast.LENGTH_SHORT
+//
+//                        val toast = Toast.makeText(context, text, duration)
+//                        toast.setGravity(Gravity.TOP, 0, 0)
+//                        toast.show()
+//                    }
+//                    return true
+//                }
+//
+//                override fun onQueryTextChange(queryText: String):
+//                        Boolean {
+//                    Log.d(TAG, "QueryTextChange: $queryText")
+//                    return false
+//                }
+//            })
+//        }
+//    }
 
     private inner class NewsHolder(view: View)
         : RecyclerView.ViewHolder(view), View.OnClickListener {
