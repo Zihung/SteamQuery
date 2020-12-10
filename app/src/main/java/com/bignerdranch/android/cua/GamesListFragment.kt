@@ -7,6 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ private const val TAG = "CrimeListFragment"
 private const val ARG_APPS = "apps_map"
 
 class GamesListFragment : Fragment() {
-    private lateinit var crimeRecyclerView: RecyclerView
+    private lateinit var gameRecyclerView: RecyclerView
     private var adapter: GameAdapter? = null
     private lateinit var appsMap : HashMap<String, String>
 
@@ -44,6 +45,7 @@ class GamesListFragment : Fragment() {
         }
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
     {
         super.onCreateOptionsMenu(menu, inflater)
@@ -63,6 +65,7 @@ class GamesListFragment : Fragment() {
 
                     if (appid != null) {
                         gamesListViewModel.followGame(queryText, appid)
+                        updateUI()
                     }
                     else{
                         val text = "Game not found. Please enter full name of game including spaces and special characters."
@@ -83,6 +86,7 @@ class GamesListFragment : Fragment() {
                 }
             })
         }
+        updateUI()
     }
 
 
@@ -93,9 +97,9 @@ class GamesListFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_games_followed_list,
             container, false)
-        crimeRecyclerView =
+        gameRecyclerView =
             view.findViewById(R.id.games_followed_recycler_view) as RecyclerView
-        crimeRecyclerView.layoutManager = LinearLayoutManager(context)
+        gameRecyclerView.layoutManager = LinearLayoutManager(context)
 
         updateUI()
 
@@ -105,7 +109,7 @@ class GamesListFragment : Fragment() {
     private fun updateUI() {
         val games = gamesListViewModel.games
         adapter = GameAdapter(games)
-        crimeRecyclerView.adapter = adapter
+        gameRecyclerView.adapter = adapter
     }
 
 
