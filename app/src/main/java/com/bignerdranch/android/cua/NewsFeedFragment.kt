@@ -56,11 +56,9 @@ class NewsFeedFragment : Fragment() {
         return view
     }
     companion object {
-        fun newInstance(appsMap: HashMap<String, String>): NewsFeedFragment {
+        fun newInstance(): NewsFeedFragment {
 
             val args = Bundle().apply{
-//                putAll(ARG_APPS, appsMap)
-                putSerializable(ARG_APPS, appsMap)
             }
             return NewsFeedFragment().apply{
                 arguments = args

@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager
                 .beginTransaction()
                 .add(R.id.fragmentContainer,
-                    NewsFeedFragment.newInstance(appsMap))
+                    NewsFeedFragment.newInstance())
                 .commit()
         }
 
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                         supportFragmentManager
                             .beginTransaction()
                             .replace(R.id.fragmentContainer,
-                                NewsFeedFragment.newInstance(appsMap))
+                                NewsFeedFragment.newInstance())
                             .commit()
                     }
                 }
