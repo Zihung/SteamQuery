@@ -25,6 +25,7 @@ object GamesListPreferences {
             .edit()
             .remove(name)
             .apply()
+
     }
 
 

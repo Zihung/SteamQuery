@@ -134,6 +134,12 @@ class GamesListFragment : Fragment() {
             this.game = game
             titleTextView.text = this.game.name
             dateTextView.text = this.game.appid
+
+            if(titleTextView.text == "" || dateTextView.text == ""){
+                titleTextView.text = ""
+                dateTextView.text = "";
+            }
+
         }
 
 
