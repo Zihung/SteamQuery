@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CUA</string>
+    <string name="app_name">Content Update Aggregator</string>
     <string name="search">Search</string>
     <string name="clear_search">Clear Search</string>
     <string name="title">Title</string>
