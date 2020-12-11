@@ -13,4 +13,7 @@ interface SteamApi {
 
     @GET("ISteamNews/GetNewsForApp/v0002")
     fun searchGames(@Query("appid") query: String): Call<SteamResponse>
+
+    @GET("ISteamApps/GetAppList/v0002")
+    fun findGame(@Query("appid") query: String): Call<SteamResponse>
 }
