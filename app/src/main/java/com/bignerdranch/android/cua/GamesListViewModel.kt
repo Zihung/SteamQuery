@@ -16,7 +16,10 @@ class GamesListViewModel(private val app: Application) :
 
         if (gameItemLiveData != null) {
             gameItemLiveData.forEach{
-                games.add(Game(it.key, it.value as String))
+                if(it.value != ""){
+                    games.add(Game(it.key, it.value as String))
+                }
+
             }
         }
 
