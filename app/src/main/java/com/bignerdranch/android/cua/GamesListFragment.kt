@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.cua.api.Game
 
-private const val TAG = "CrimeListFragment"
+private const val TAG = "GamesListFragment"
 private const val ARG_APPS = "apps_map"
 
 class GamesListFragment : Fragment() {
@@ -61,11 +61,20 @@ class GamesListFragment : Fragment() {
 
                     // convert name into app id
                     val appid: String? = appsMap[queryText.toLowerCase()]
-                    Log.d(TAG, "Name: $queryText, Appid: $appid")
+                    val gameName = queryText.toUpperCase()
+                    Log.d(TAG, "Name: $gameName, Appid: $appid")
 
                     if (appid != null) {
-                        gamesListViewModel.followGame(queryText, appid)
+                        gamesListViewModel.followGame(gameName, appid)
                         updateUI()
+
+                        val text =
+                            "Followed " + gameName + "!"
+                        val duration = Toast.LENGTH_SHORT
+
+                        val toast = Toast.makeText(context, text, duration)
+                        toast.setGravity(Gravity.TOP, 0, 0)
+                        toast.show()
                     } else {
                         val text =
                             "Game not found. Please enter full name of game including spaces and special characters."
@@ -73,6 +82,8 @@ class GamesListFragment : Fragment() {
 
                         val toast = Toast.makeText(context, text, duration)
                         toast.setGravity(Gravity.TOP, 0, 0)
+
+                        //TODO refresh fragment
                         toast.show()
                     }
                     updateUI()
@@ -151,6 +162,13 @@ class GamesListFragment : Fragment() {
 
         override fun onLongClick(v: View?): Boolean {
             gamesListViewModel.followGame(this.game.name)
+
+            val ft: FragmentTransaction = fragmentManager!!.beginTransaction()
+            ft.replace(
+                R.id.fragmentContainer,
+                GamesListFragment.newInstance(appsMap)
+            ).commit()
+
             return true
         }
     }
