@@ -75,6 +75,13 @@ class GamesListFragment : Fragment() {
                         val toast = Toast.makeText(context, text, duration)
                         toast.setGravity(Gravity.TOP, 0, 0)
                         toast.show()
+
+                        val ft: FragmentTransaction = fragmentManager!!.beginTransaction()
+                        ft.replace(
+                            R.id.fragmentContainer,
+                            GamesListFragment.newInstance(appsMap)
+                        ).commit()
+
                     } else {
                         val text =
                             "Game not found. Please enter full name of game including spaces and special characters."

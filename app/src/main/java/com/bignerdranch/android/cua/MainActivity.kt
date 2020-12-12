@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
-
         if (currentFragment == null) {
             supportFragmentManager
                 .beginTransaction()
@@ -54,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                                 NewsFeedFragment.newInstance())
                             .commit()
                     }
+                    Log.d("asd", currentFragment.toString())
                 }
                 R.id.ic_favorite -> {
                     if (currentFragment == null) {
